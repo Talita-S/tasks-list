@@ -1,8 +1,12 @@
 package org.talita.s.taskslist.rest;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.talita.s.taskslist.domain.model.Task;
 import org.talita.s.taskslist.rest.dto.AddTaskRequest;
 
 @Path("/tasks")
@@ -11,13 +15,21 @@ import org.talita.s.taskslist.rest.dto.AddTaskRequest;
 public class TaskResource {
 
     @POST
+    @Transactional
     public Response addTask (AddTaskRequest taskRequest ) {
-        return Response.ok(taskRequest).build();
+        Task task = new Task();
+        task.setDescription(taskRequest.getDescription());
+        task.setDone(taskRequest.isDone());
+
+        task.persist();
+
+        return Response.ok(task).build();
     }
 
     @GET
     public Response listAllTasks() {
-        return Response.ok().build();
+        PanacheQuery<Task> query = Task.findAll();
+        return Response.ok(query.list()).build();
     }
 
 }
