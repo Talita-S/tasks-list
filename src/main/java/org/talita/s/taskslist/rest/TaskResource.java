@@ -1,6 +1,7 @@
 package org.talita.s.taskslist.rest;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -16,6 +17,7 @@ public class TaskResource {
 
     private final TaskRepository repository;
 
+    @Inject
     public TaskResource(TaskRepository repository) {
         this.repository = repository;
     }
@@ -23,18 +25,19 @@ public class TaskResource {
     @POST
     @Transactional
     public Response addTask (AddTaskRequest taskRequest ) {
+
         Task task = new Task();
         task.setDescription(taskRequest.getDescription());
         task.setDone(taskRequest.isDone());
 
-        task.persist();
+        repository.persist(task);
 
         return Response.ok(task).build();
     }
 
     @GET
     public Response listAllTasks() {
-        PanacheQuery<Task> query = Task.findAll();
+        PanacheQuery<Task> query = repository.findAll();
         return Response.ok(query.list()).build();
     }
 
