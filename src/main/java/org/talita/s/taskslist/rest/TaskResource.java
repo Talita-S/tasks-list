@@ -55,4 +55,19 @@ public class TaskResource {
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
+    @PUT
+    @Path("{id}")
+    @Transactional
+    public Response updateTask(@PathParam("id") Long id, AddTaskRequest taskData) {
+        Task task = repository.findById(id);
+
+        if(task != null) {
+            task.setDescription(taskData.getDescription());
+            task.setDone(taskData.isDone());
+            return Response.ok("Tarefa atualizada com sucesso!").build();
+        }
+
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
 }
