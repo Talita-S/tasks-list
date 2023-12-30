@@ -41,4 +41,18 @@ public class TaskResource {
         return Response.ok(query.list()).build();
     }
 
+    @DELETE
+    @Path("{id}")
+    public Response deleteTask(@PathParam("id") Long id){
+
+        Task task = repository.findById(id);
+
+        if(task != null) {
+            repository.delete(task);
+            return Response.noContent().build();
+        }
+
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
 }
