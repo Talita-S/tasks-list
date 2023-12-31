@@ -64,6 +64,7 @@ public class TaskResource {
 
     @DELETE
     @Path("{id}")
+    @Transactional
     @Operation(summary = "Delete a task by id")
     @APIResponse(responseCode = "200", description = "OK")
     @APIResponse(responseCode = "404", description = "Invalid id")
