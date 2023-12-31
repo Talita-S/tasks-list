@@ -85,4 +85,15 @@ class TaskResourceTest {
             .statusCode(204);
     }
 
+    @Test
+    @DisplayName("Should return 404 when delete a task with nonexistent id")
+    void idNotFoundWhenDeleteTaskTest() {
+        given()
+                .contentType(ContentType.JSON)
+                .when()
+                .delete("/tasks/2")
+                .then()
+                .statusCode(404);
+    }
+
 }
