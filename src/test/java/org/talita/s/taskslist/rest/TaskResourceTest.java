@@ -76,6 +76,7 @@ class TaskResourceTest {
 
     @Test
     @DisplayName("Should delete a task successfully")
+    @Order(6)
     void deleteTaskTest() {
         given()
             .contentType(ContentType.JSON)
@@ -87,6 +88,7 @@ class TaskResourceTest {
 
     @Test
     @DisplayName("Should return 404 when delete a task with nonexistent id")
+    @Order(4)
     void idNotFoundWhenDeleteTaskTest() {
         given()
                 .contentType(ContentType.JSON)
@@ -94,6 +96,23 @@ class TaskResourceTest {
                 .delete("/tasks/2")
                 .then()
                 .statusCode(404);
+    }
+
+    @Test
+    @DisplayName("Should update a task successfully")
+    @Order(5)
+    void updateTaskTest() {
+        var task = new AddTaskRequest();
+        task.setDescription("Tarefa teste 2");
+        task.setDone(true);
+
+        given()
+            .contentType(ContentType.JSON)
+                .body(task)
+        .when()
+            .put("/tasks/1")
+        .then()
+            .statusCode(204);
     }
 
 }
