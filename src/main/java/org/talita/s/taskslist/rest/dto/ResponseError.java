@@ -2,12 +2,14 @@ package org.talita.s.taskslist.rest.dto;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.ws.rs.core.Response;
+import lombok.Data;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Data
 public class ResponseError {
 
     public static final int UNPROCESSABLE_ENTITY_STATUS = 422;
