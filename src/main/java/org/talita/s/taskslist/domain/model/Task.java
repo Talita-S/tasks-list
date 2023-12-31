@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Entity
 @Table(name = "tasks")
- @Data
+@Data
 public class Task extends PanacheEntityBase {
 
     @Id

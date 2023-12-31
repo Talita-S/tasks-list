@@ -1,14 +1,13 @@
 package org.talita.s.taskslist.rest.dto;
 
 import jakarta.validation.ConstraintViolation;
-import lombok.Data;
+import jakarta.ws.rs.core.Response;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Data
 public class ResponseError {
 
     public static final int UNPROCESSABLE_ENTITY_STATUS = 422;
@@ -31,4 +30,7 @@ public class ResponseError {
         return new ResponseError(message, errors);
     }
 
+    public Response withStatusCode(int code) {
+        return Response.status(code).entity(this).build();
+    }
 }
