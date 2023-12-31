@@ -74,4 +74,15 @@ class TaskResourceTest {
             .body("size()", Matchers.is(1));
     }
 
+    @Test
+    @DisplayName("Should delete a task successfully")
+    void deleteTaskTest() {
+        given()
+            .contentType(ContentType.JSON)
+        .when()
+            .delete("/tasks/1")
+        .then()
+            .statusCode(204);
+    }
+
 }
