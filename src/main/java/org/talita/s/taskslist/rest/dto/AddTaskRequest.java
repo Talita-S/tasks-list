@@ -1,8 +1,12 @@
 package org.talita.s.taskslist.rest.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class AddTaskRequest {
 
+    @NotBlank(message = "Descrição é obrigatória")
     private String description;
+
     private boolean done;
 
     public String getDescription() {
