@@ -2,8 +2,8 @@ package org.talita.s.taskslist.rest;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.*;
 import org.talita.s.taskslist.rest.dto.AddTaskRequest;
 import org.talita.s.taskslist.rest.dto.ResponseError;
 
@@ -14,10 +14,12 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TaskResourceTest {
 
     @Test
     @DisplayName("Should create a task successfully")
+    @Order(1)
     void addTaskTest() {
         var task = new AddTaskRequest();
         task.setDescription("Tarefa teste");
@@ -38,6 +40,7 @@ class TaskResourceTest {
 
     @Test
     @DisplayName("Should return error when json isn't valid")
+    @Order(2)
     void addTaskValidationErrorTest() {
         var task = new AddTaskRequest();
         task.setDescription(null);
@@ -56,6 +59,19 @@ class TaskResourceTest {
 
         List<Map<String, String>> errors = response.jsonPath().getList("errors");
         assertNotNull(errors.get(0).get("message"));
+    }
+
+    @Test
+    @DisplayName("Should retrieve all tasks successfully")
+    @Order(3)
+    void listAllTasksTest() {
+        given()
+            .contentType(ContentType.JSON)
+        .when()
+            .get("/tasks")
+        .then()
+            .statusCode(200)
+            .body("size()", Matchers.is(1));
     }
 
 }
