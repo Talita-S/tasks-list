@@ -6,6 +6,8 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.talita.s.taskslist.domain.model.Task;
 import org.talita.s.taskslist.domain.repository.TaskRepository;
 import org.talita.s.taskslist.rest.dto.AddTaskRequest;
@@ -24,6 +26,7 @@ public class TaskResource {
 
     @POST
     @Transactional
+    @Operation(summary = "Add a new task")
     public Response addTask (AddTaskRequest taskRequest ) {
 
         Task task = new Task();
@@ -36,6 +39,7 @@ public class TaskResource {
     }
 
     @GET
+    @Operation(summary = "List all tasks")
     public Response listAllTasks() {
         PanacheQuery<Task> query = repository.findAll();
         return Response.ok(query.list()).build();
@@ -43,6 +47,9 @@ public class TaskResource {
 
     @DELETE
     @Path("{id}")
+    @Operation(summary = "Delete a task by id")
+    @APIResponse(responseCode = "200", description = "OK")
+    @APIResponse(responseCode = "404", description = "Invalid id")
     public Response deleteTask(@PathParam("id") Long id){
 
         Task task = repository.findById(id);
@@ -58,6 +65,10 @@ public class TaskResource {
     @PUT
     @Path("{id}")
     @Transactional
+    @Operation(summary = "Update a task by id")
+    @Produces(MediaType.TEXT_PLAIN)
+    @APIResponse(responseCode = "200", description = "OK")
+    @APIResponse(responseCode = "404", description = "Invalid id")
     public Response updateTask(@PathParam("id") Long id, AddTaskRequest taskData) {
         Task task = repository.findById(id);
 
