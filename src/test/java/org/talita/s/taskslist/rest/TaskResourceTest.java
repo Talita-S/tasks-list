@@ -115,4 +115,16 @@ class TaskResourceTest {
             .statusCode(204);
     }
 
+    @Test
+    @DisplayName("Should return 404 when update a task with nonexistent id")
+    @Order(7)
+    void idNotFoundWhenUpdateTaskTest() {
+        given()
+            .contentType(ContentType.JSON)
+        .when()
+            .put("/tasks/2")
+        .then()
+            .statusCode(404);
+    }
+
 }
